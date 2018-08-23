@@ -17,14 +17,13 @@ headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
 }
 
-# 获取图片ID
+# 获取imageID
 def get_imageID(term, page):
     try:
         print('获取图片ID.....')
         url = 'https://stock.tuchong.com/api/free/search/?term=' + term + '&page=' + str(page)
         req = requests.get(url, headers=headers)
         if req.status_code == 200:
-            print('200, 返回图片ID JSON')
             json_imageid = req.json()
             return parse_imgID(json_imageid)
     except ConnectionError:
@@ -51,7 +50,6 @@ def get_ImageJPG(id):
             url = 'https://stock.tuchong.com/free/image/?imageId=' + str(id)
             req = requests.get(url, headers=headers)
             if req.status_code == 200:
-                print('200, 返回HTML...')
                 return parse_imgURL(req.text)
         except ConnectionError:
             return None
@@ -72,7 +70,6 @@ def download_image(url):
         urls = 'https:' + url 
         ir = requests.get(urls)
         if ir.status_code == 200:
-            print("图片下载,200---")
             save_image(ir.content)
         return None
     except RequestException:
@@ -87,7 +84,7 @@ def save_image(content):
             print('下载成功----------------------')
 
 def main():
-    term = input('输入想要搜索的内容!')
+    term = input('输入想要搜索的内容: ')
     for i in range(1, 7):
         get_imageID(term, i)
 
